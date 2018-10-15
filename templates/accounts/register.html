@@ -1,0 +1,90 @@
+{% load static %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Collaboration IDE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+
+	<link href="//fonts.googleapis.com/css?family=Sansita:400,400i,700,700i,800,800i,900,900i&amp;subset=latin-ext" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+
+	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' media="all" /><!--stylesheet-->
+</head>
+<body>
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+
+<h1>Collaboration IDE</h1>
+<div class="form-w3ls">
+    <ul class="tab-group cl-effect-4">
+        <li class="tab active"><a href="#signin-agile">Sign In</a></li>
+		<li class="tab"><a href="#signup-agile">Sign Up</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="signin-agile">
+            {% if LoginFormRender.errors %}
+            <!-- Error messaging -->
+                <div id="errors">
+                    <div class="inner">
+                        {{ LoginFormRender.non_field_errors }}
+                        <ul style="list-style-type: none">
+                            {% for field in LoginFormRender %}
+                                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                            {% endfor %}
+                        </ul>
+                    <br>
+                    </div>
+                </div>
+            <!-- /Error messaging -->
+            {% endif %}
+			<form action="{% url 'form' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" id="check" name="check" value="login">
+				    {% for field in LoginFormRender.visible_fields %}
+                    {{ field.label }}<br>
+                    {{ field }}<br>
+                {% endfor %}
+
+				<input type="submit" class="sign-in" value="Sign In">
+			</form>
+		</div>
+		<div id="signup-agile">
+            {% if SignUpFormRender.errors %}
+	        <!-- Error messaging -->
+                <div id="errors">
+                    <div class="inner">
+                        {{ SignUpFormRender.non_field_errors }}
+                        <ul>
+                            {% for field in SignUpFormRender %}
+                                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                            {% endfor %}
+                        </ul>
+                    <br>
+                    </div>
+                </div>
+            <!-- /Error messaging -->
+            {% endif %}
+
+			<form action="{% url 'form' %}" method="post">
+                {% csrf_token %}
+				<input type="hidden" id="check" name="check" value="signup">
+
+                {% for field in SignUpFormRender.visible_fields %}
+                    {{ field.label }}<br>
+                    {{ field }}<br>
+                {% endfor %}
+
+				<input type="submit" class="register" value="Sign up">
+			</form>
+		</div>
+    </div>
+</div>
+<p class="copyright">&copy;2018 Collaboration IDE</p>
+<!-- js files -->
+<script src="{% static 'js/main.js' %}"></script>
+<!-- /js files -->
+</body>
+</html>

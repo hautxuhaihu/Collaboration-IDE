@@ -1,0 +1,32 @@
+body {
+	background:url(../images/bg.jpg);
+	background-repeat:no-repeat;
+	background-position:center;
+	background-attachment:fixed;
+}
+
+#title {
+	font-family: Peralta;
+	color: white;
+}
+
+h1 {
+	font-family: Sansita;
+	color: white;
+}
+
+#display {
+
+	margin-left:20px;
+	margin-top:20px;
+	margin-bottom: 20px;
+	margin-right: 20px;
+
+}
+
+.card-title {
+     /*color:#005A31;*/
+     color:red;
+	text-align: center;
+}
+
