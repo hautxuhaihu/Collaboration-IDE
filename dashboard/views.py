@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Project
 from accounts.models import Contributor
 from ide.views import ide
+from random_key import id_generator
 
 @login_required(login_url='/')
 def home(request):
@@ -46,9 +47,12 @@ def joinproject(request):
         if project is not None:
             contributor = Contributor(user=request.user)
             if Contributor.objects.filter(user=request.user):
-                pass
+                contributor = Contributor.objects.filter(user=request.user)[0]
+                project.Developers.add(contributor)
             else:
                 contributor.save()
+                project.Developers.add(contributor)
+
 
             return redirect('ide', project.id)
 
@@ -56,9 +60,27 @@ def joinproject(request):
             return HttpResponse("Invalid Key")
 
 def createproject(request):
-
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
+        key = id_generator()
+
+        while Project.objects.filter(Key=key):
+            key = id_generator()
+
+        owner = request.user
+
+        project = Project(Title=title, Description=description, Key=key, Owner=owner)
+        project.save()
+
+        contributor = Contributor(user=request.user)
+        if Contributor.objects.filter(user=request.user):
+            contributor = Contributor.objects.filter(user=request.user)[0]
+            project.Developers.add(contributor)
+        else:
+            contributor.save()
+            project.Developers.add(contributor)
+
+        return redirect('home')
 
 

@@ -12,12 +12,12 @@
     <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
 
   <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
 
   <!-- ACE and its JavaScript mode and theme files -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/mode-javascript.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/theme-textmate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-github.js"></script>
 
   <!-- Firepad -->
   <link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.css" />
@@ -54,9 +54,9 @@
       //// Initialize Firebase.
       //// TODO: replace with your Firebase project configuration.
       var config = {
-        apiKey: "AIzaSyC_JdByNm-E1CAJUkePsr-YJZl7W77oL3g",
-        authDomain: "firepad-tests.firebaseapp.com",
-        databaseURL: "https://firepad-tests.firebaseio.com"
+        apiKey: "AIzaSyBI8uzW2FaBTe_NCceJbgFsNxcz_EeBOUw",
+        authDomain: "collabide-2350f.firebaseapp.com",
+        databaseURL: "https://collabide-2350f.firebaseio.com"
       };
 
       firebase.initializeApp(config);
@@ -64,7 +64,7 @@
       var firepadRef = getExampleRef();
       //// Create ACE
       var editor = ace.edit("firepad-container");
-      editor.setTheme("ace/theme/textmate");
+      editor.setTheme("ace/theme/github");
       var session = editor.getSession();
       session.setUseWrapMode(true);
       session.setUseWorker(false);

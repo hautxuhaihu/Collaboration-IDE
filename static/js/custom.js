@@ -1,21 +1,25 @@
 $('.modal-button').on('click', function () {
     var title_tag = "name-"+$(this).val();
 
-    console.log(title_tag);
+    //console.log(title_tag);
     var description_tag = "description-"+$(this).val();
-    $("#modal-name").html(document.getElementById(title_tag).textContent);
+
+    $("#modal-titler").html(document.getElementById(title_tag).textContent);
     $("#modal-description").html(document.getElementById(description_tag).textContent);
 
     console.log("hello ji");
 });
 
-function validateform() {
+function Validate() {
 
-    var title = document.getElementById('createtitle');
+    var title = document.forms["createproject"]["createtitle"].value;
 
-    if(title==='')
+    console.log("dlndnf");
+
+    if(title === "") {
         alert('Title is mandatory');
+        return false;
+    }
 
-    return false;
-
+    return true;
 }

@@ -76,10 +76,10 @@
                 <h4 id="modal-name" class="modal-title">Create Project</h4>
             </div>
             <div class="modal-body">
-              <form action="{% url 'createproject' %}" method="post">
+              <form id="createproject" method="post" onsubmit="return Validate()" action="{% url 'createproject' %}">
                   {% csrf_token %}
                   <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Enter Project Title" id="createtitle" name="title" onsubmit="return validateform()"><br>
+                    <input class="form-control" type="text" placeholder="Enter Project Title" id="createtitle" name="title"><br>
                     <input class="form-control" type="textarea" placeholder="Enter Project Description" name="description"><br>
                     <button type="submit" class="btn-success">Create</button>
                   </div>
@@ -109,7 +109,7 @@
             <div class="card mb-3">
                <div id="display">
                 <h3 class="card-title" id="name-{{ project.id }}"> {{ project.Title }}</h3>
-                   <p type="hidden" id="description-{{ project.id }}"> {{ project.Description }}</p>
+                   <p style="display: none;" id="description-{{ project.id }}"> {{ project.Description }}</p>
                 <p> Date Created : <span class="text-muted">{{ project.Created }}</span> </p>
                 <p> Date Modified : <span class="text-muted">{{ project.LastModified }}</span> </p>
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
@@ -124,7 +124,7 @@
             {% else %}
 
             <div class="container" style="border-radius: 5px; background-color: white; padding: 20px;">
-                <h3> No projects to display! </h3>
+                <h4> No projects to display! </h4>
             </div>
 
         {% endif %}
@@ -147,7 +147,14 @@
             <div class="card mb-3">
                <div id="display">
                 <h3 class="card-title" id="name-{{ project.id }}"> {{ project.Title }}</h3>
-                   <p type="hidden" id="description-{{ project.id }}"> {{ project.Description }}</p>
+                   <p style="display:none;" id="description-{{ project.id }}"> {{ project.Description }}</p>
+                   <div style="text-align: center;">
+                   <button style="float: " class="btn-info" data-toggle="collapse" data-target="#showkey{{ project.id }}">Show Key</button>
+                   <div id="showkey{{ project.id }}" class="collapse">
+                        {{ project.Key }}
+                   </div>
+                   </div>
+                   <br>
                 <p> Date Created : <span class="text-muted">{{ project.Created }}</span> </p>
                 <p> Date Modified : <span class="text-muted">{{ project.LastModified }}</span> </p>
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
@@ -162,7 +169,7 @@
             {% else %}
 
             <div class="container" style="border-radius: 5px; background-color: white; padding: 20px;">
-                <h3> No projects to display! </h3>
+                <h4> No projects to display! </h4>
             </div>
 
         {% endif %}
@@ -185,7 +192,7 @@
             <div class="card mb-3">
                <div id="display">
                 <h3 class="card-title" id="name-{{ project.id }}"> {{ project.Title }}</h3>
-                <p type="hidden" id="description-{{ project.id }}"> {{ project.Description }}</p>
+                <p style="display: none;" id="description-{{ project.id }}"> {{ project.Description }}</p>
                 <p> Date Created : <span class="text-muted">{{ project.Created }}</span> </p>
                 <p> Date Modified : <span class="text-muted">{{ project.LastModified }}</span> </p>
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
@@ -196,6 +203,11 @@
             </div>
         {% endfor %}
         </div>
+            {% else %}
+
+            <div class="container" style="border-radius: 5px; background-color: white; padding: 20px;">
+                <h4> No projects to display! </h4>
+            </div>
         {% endif %}
     </div>
     </div>
@@ -205,7 +217,7 @@
 
                   <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="modal-name" class="modal-title"></h4>
+                        <h4 id="modal-titler" class="modal-title"></h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                     </div>
