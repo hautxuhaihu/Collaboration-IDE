@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 
 def formhandleview(request):
 
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == "POST":
 
         if request.POST['check'] == "login":

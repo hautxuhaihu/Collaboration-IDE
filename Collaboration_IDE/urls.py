@@ -18,12 +18,15 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.conf.urls import url
 from accounts.views import formhandleview
-from dashboard.views import home, join
+from dashboard.views import home, joinproject, createproject
+from ide.views import ide
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$' , formhandleview, name="form"),
     url(r'^home$', home, name='home'),
     url(r'^logout$', auth_views.LogoutView.as_view(), name='logout'),
-    url(r'^join$', join, name='join')
+    url(r'^ide/(?P<pk>[0-9]+)/$', ide, name='ide'),
+    url(r'^joinproject/$', joinproject, name='joinproject'),
+    url(r'^createproject/$', createproject, name='createproject')
 ]

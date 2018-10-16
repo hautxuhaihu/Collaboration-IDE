@@ -15,10 +15,14 @@ h1 {
 	color: white;
 }
 
+#wcontent{
+	background-color: white;
+}
+
 #display {
 
 	margin-left:20px;
-	margin-top:20px;
+	padding-top:20px;
 	margin-bottom: 20px;
 	margin-right: 20px;
 

@@ -1,17 +1,24 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from .models import Project
 from accounts.models import Contributor
+from ide.views import ide
 
 @login_required(login_url='/')
 def home(request):
     try:
         contributor = Contributor.objects.all().filter(user=request.user)
         yourprojects = Project.objects.all().filter(Developers__in=contributor)
-        ownprojects = Projects.objects.all().filter(Owner__exact=request.user)
+        print(yourprojects)
     except:
         yourprojects = None
+
+    try:
+        ownprojects = Project.objects.all().filter(Owner=request.user)
+        print(request.user)
+    except:
         ownprojects = None
 
     try:
@@ -27,21 +34,31 @@ def home(request):
 
     return render(request, 'dashboard/home.html',context)
 
-def join(request):
+def joinproject(request):
     if request.method=='POST':
         key = request.POST.get('key')
 
         try:
             project = Project.objects.filter(Key=key)[0]
         except:
-            print('No such object')
             project = None
 
         if project is not None:
             contributor = Contributor(user=request.user)
-            contributor.save()
+            if Contributor.objects.filter(user=request.user):
+                pass
+            else:
+                contributor.save()
 
-            project.Developers.add(contributor)
+            return redirect('ide', project.id)
 
-            return render(request, 'ide/ide.html', {'project':project})
+        else:
+            return HttpResponse("Invalid Key")
+
+def createproject(request):
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+
 

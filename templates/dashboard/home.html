@@ -26,6 +26,75 @@
     </nav>
 
     <br>
+
+    {% if error %}
+    <script>
+        alert(error);
+    </script>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <a><button type="button" class="btn-lg btn-block btn-info" data-toggle="modal" data-target="#joinProject">Join a Project</button></a>
+            </div>
+            <div class="col-sm-6">
+                <a><button type="button" class="btn-lg btn-block btn-info" data-toggle="modal" data-target="#createProject">Create a Project</button></a>
+            </div>
+        </div>
+    </div>
+
+     <div class="modal fade" id="joinProject" role="dialog">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-name" class="modal-title">Join Project</h4>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'joinproject' %}" method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Enter Key" name="key"><br>
+                    <button type="submit" class="btn-success">Join!</button>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+            </div>
+     </div>
+
+    <div class="modal fade" id="createProject" role="dialog">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-name" class="modal-title">Create Project</h4>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'createproject' %}" method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Enter Project Title" id="createtitle" name="title" onsubmit="return validateform()"><br>
+                    <input class="form-control" type="textarea" placeholder="Enter Project Description" name="description"><br>
+                    <button type="submit" class="btn-success">Create</button>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+            </div>
+     </div>
+
+    <hr>
+    <br>
     <div class="container">
     <h1>PROJECTS YOU CONTRIBUTE TO</h1>
     <br>
@@ -39,20 +108,30 @@
             <div class="col-sm-4" style="margin-bottom:15px">
             <div class="card mb-3">
                <div id="display">
-                <h3 class="card-title"> {{ project.Title }}</h3>
+                <h3 class="card-title" id="name-{{ project.id }}"> {{ project.Title }}</h3>
+                   <p type="hidden" id="description-{{ project.id }}"> {{ project.Description }}</p>
                 <p> Date Created : <span class="text-muted">{{ project.Created }}</span> </p>
                 <p> Date Modified : <span class="text-muted">{{ project.LastModified }}</span> </p>
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
 
-                <button class="btn btn-primary" style="text-align: center">Read More</button>
+                <button value="{{ project.id }}" type="button" class="btn btn-primary modal-button" style="text-align: center" data-toggle="modal" data-target="#myModal">Read More</button>
+                <a href="{% url 'ide' project.id %}"><button type="button" class="btn btn-success" style="float: right">Open</button> </a>
                </div>
             </div>
             </div>
         {% endfor %}
         </div>
+            {% else %}
+
+            <div class="container" style="border-radius: 5px; background-color: white; padding: 20px;">
+                <h3> No projects to display! </h3>
+            </div>
+
         {% endif %}
     </div>
     </div>
+
+    <br>
 
     <div class="container">
     <h1>PROJECTS YOU CREATED</h1>
@@ -67,20 +146,30 @@
             <div class="col-sm-4" style="margin-bottom:15px">
             <div class="card mb-3">
                <div id="display">
-                <h3 class="card-title"> {{ project.Title }}</h3>
+                <h3 class="card-title" id="name-{{ project.id }}"> {{ project.Title }}</h3>
+                   <p type="hidden" id="description-{{ project.id }}"> {{ project.Description }}</p>
                 <p> Date Created : <span class="text-muted">{{ project.Created }}</span> </p>
                 <p> Date Modified : <span class="text-muted">{{ project.LastModified }}</span> </p>
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
 
-                <button class="btn btn-primary" style="text-align: center">Read More</button>
+                <button value="{{ project.id }}" type="button" class="btn btn-primary modal-button" style="text-align: center" data-toggle="modal" data-target="#myModal">Read More</button>
+                   <a href="{% url 'ide' project.id %}"><button type="button" class="btn btn-success" style="float: right">Open</button> </a>
                </div>
             </div>
             </div>
         {% endfor %}
         </div>
+            {% else %}
+
+            <div class="container" style="border-radius: 5px; background-color: white; padding: 20px;">
+                <h3> No projects to display! </h3>
+            </div>
+
         {% endif %}
     </div>
     </div>
+
+    <br>
 
     <div class="container">
     <h1>RECENT PROJECTS</h1>
@@ -95,12 +184,13 @@
             <div class="col-sm-4" style="margin-bottom:15px">
             <div class="card mb-3">
                <div id="display">
-                <h3 class="card-title"> {{ project.Title }}</h3>
+                <h3 class="card-title" id="name-{{ project.id }}"> {{ project.Title }}</h3>
+                <p type="hidden" id="description-{{ project.id }}"> {{ project.Description }}</p>
                 <p> Date Created : <span class="text-muted">{{ project.Created }}</span> </p>
                 <p> Date Modified : <span class="text-muted">{{ project.LastModified }}</span> </p>
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
 
-                <button class="btn btn-primary" style="text-align: center">Read More</button>
+                <button value="{{ project.id }}" type="button" class="btn btn-primary modal-button" style="text-align: center" data-toggle="modal" data-target="#myModal">Read More</button>
                </div>
             </div>
             </div>
@@ -109,6 +199,30 @@
         {% endif %}
     </div>
     </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="modal-name" class="modal-title"></h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                      <p id="modal-description"></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+
+                    </div>
+                </div>
+
+    <hr>
+
+<script src="{% static 'js/custom.js' %}"></script>
 
 </body>
 </html>
