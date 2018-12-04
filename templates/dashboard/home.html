@@ -115,7 +115,7 @@
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
 
                 <button value="{{ project.id }}" type="button" class="btn btn-primary modal-button" style="text-align: center" data-toggle="modal" data-target="#myModal">Read More</button>
-                <a href="{% url 'ide' project.id %}"><button type="button" class="btn btn-success" style="float: right">Open</button> </a>
+                <a href="{% url 'overview' project.id %}"><button type="button" class="btn btn-success" style="float: right">Open</button> </a>
                </div>
             </div>
             </div>
@@ -160,7 +160,7 @@
                 <p> Created By : <span class="text-muted">{{ project.Owner }}</span> </p>
 
                 <button value="{{ project.id }}" type="button" class="btn btn-primary modal-button" style="text-align: center" data-toggle="modal" data-target="#myModal">Read More</button>
-                   <a href="{% url 'ide' project.id %}"><button type="button" class="btn btn-success" style="float: right">Open</button> </a>
+                   <a href="{% url 'overview' project.id %}"><button type="button" class="btn btn-success" style="float: right">Open</button> </a>
                </div>
             </div>
             </div>
