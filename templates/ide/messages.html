@@ -1,0 +1,25 @@
+{% if Chat %}
+
+{% for obj in Chat %}
+
+        {% if obj.username == request.user.username %}
+
+            <div class="container2 darker">
+                <img class="right" src="https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png" alt="Avatar" style="width:100%;">
+                <p>{{ obj.message }}</p>
+                <span class="time-left">{{ obj.username }}</span>
+            </div>
+        {% else %}
+
+            <div class="container2 lighter">
+                <img src="https://cdn1.iconfinder.com/data/icons/mix-color-4/502/Untitled-1-512.png" alt="Avatar" style="width:100%;">
+                <p style="text-align: right">{{ obj.message }}</p>
+                <span class="time-right">{{ obj.username }}</span>
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+{% else %}
+    <p> No mesaages yet!</p>
+{% endif %}

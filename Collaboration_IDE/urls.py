@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls import url
 from accounts.views import formhandleview
 from dashboard.views import home, joinproject, createproject
-from ide.views import ide
+from ide.views import ide, Messages
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^logout$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^ide/(?P<pk>[0-9]+)/$', ide, name='ide'),
     url(r'^joinproject/$', joinproject, name='joinproject'),
-    url(r'^createproject/$', createproject, name='createproject')
+    url(r'^createproject/$', createproject, name='createproject'),
+    url(r'^messages/(?P<pk>[0-9]+)/$', Messages, name='messages'),
 ]

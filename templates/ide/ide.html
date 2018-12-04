@@ -1,8 +1,10 @@
+{% load static %}
+{% load staticfiles %}
+
 <!doctype html>
 <!-- See http://www.firepad.io/docs/ for detailed embedding docs. -->
-<html>
 <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -11,84 +13,290 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
 
-  <!-- Firebase -->
- <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
 
-  <!-- ACE and its JavaScript mode and theme files -->
+    <!-- ACE and its JavaScript mode and theme files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-github.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-csharp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-css.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-html.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-c_cpp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-java.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-python.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/mode-text.js"></script>
 
-  <!-- Firepad -->
-  <link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.css" />
-  <script src="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-github.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-dracula.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-eclipse.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-monokai.js"></script>
 
-  <style>
-    html { height: 100%; }
-    body { margin: 0; height: 100%; position: relative; }
-    /* Height / width / positioning can be customized for your use case.
-       For demo purposes, we make firepad fill the entire browser. */
-    #firepad-container {
-      width: 50%;
-      height: 100%;
-    }
-  </style>
+    <!-- Firepad -->
+    <link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.css"/>
+    <script src="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/chatbox.css' %}">
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+            position: relative;
+        }
+
+        #firepad-container {
+
+            width: 50%;
+            height: 90%;
+        }
+
+        div.directory {
+            border-radius: 5px;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 630px;
+            height: 230px;
+            border: 2px solid #dedede;
+            overflow: auto;
+            margin: 10px;
+        }
+
+        div.absolute {
+            border-radius: 5px;
+            position: absolute;
+            top: 300px;
+            right: 0;
+            width: 630px;
+            height: 300px;
+            border: 2px solid #dedede;
+            overflow: auto;
+            margin: 10px;
+
+        }
+
+        .container2 {
+            border: 2px solid #dedede;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 10px;
+            font-size: 14px;
+            height: 75px;
+        }
+
+        .lighter {
+            margin-right: 30px;
+        }
+
+        .darker {
+            border-color: #ccc;
+            background-color: #ddd;
+            margin-left: 30px;
+        }
+
+        .container2::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .container2 img {
+            float: left;
+            max-width: 60px;
+            width: 100%;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .container2 img.right {
+            float: right;
+            margin-left: 20px;
+            margin-right: 0;
+        }
+
+        .time-right {
+            float: right;
+            color: #aaa;
+        }
+
+        .time-left {
+            float: left;
+            color: #999;
+        }
+
+    </style>
 </head>
 
 <body onload="init()">
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <div class="container">
-      <a class="navbar-brand" id="title" href="#">{{ project.Title }}</a>
-    <ul class="navbar-nav navbar-right">
-      <li class="nav-item"><a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span> Created By <strong>{{ project.Owner }}</strong></a></li>
-    </ul>
-  </div>
-    </nav>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" id="title" href="#">{{ project.Title }}</a>
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item"><a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span> Created
+                By <strong>{{ project.Owner }}</strong></a></li>
+        </ul>
+    </div>
+</nav>
+<br>
 
-    <br>
-  <div id="firepad-container"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <button class="btn-large btn-info">Create New File</button>
+        </div>
 
-  <script>
+        <div class="col-sm-3">
+            <button class="btn-large btn-danger">Delete This File</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-sm-3">
+            <p>Choose Language: <select>
+                <option value="HTML">HTML</option>
+                <option value="CSS">CSS</option>
+                <option value="Python">Python</option>
+                <option value="C-CPP">C/C++</option>
+                <option value="Java">Java</option>
+                <option value="Javascript">Javascript</option>
+                <option value="text">TXT</option>
+                <option value="C#">C#
+
+            </select></p>
+        </div>
+        <div class="col-sm-3">
+            <p>Choose Theme: <select>
+                <option value="github">Github</option>
+                <option value="dracula">Dracula</option>
+                <option value="monokai">Monokai</option>
+                <option value="eclipse">Eclipse</option>
+            </select></p>
+        </div>
+    </div>
+</div>
+
+<div id="firepad-container"></div>
+<div class="directory">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Folder</th>
+            <th>File</th>
+            <th>Created</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>src</td>
+            <td><a>gitignore</a></td>
+            <td>1 Dec 2018</td>
+        </tr>
+        <tr>
+            <td>src/static</td>
+            <td><a>index.js</a></td>
+            <td>2 Dec 2018</td>
+        </tr>
+        <tr>
+            <td>src/templates</td>
+            <td><a>home.html</a></td>
+            <td>2 Dec 2018</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="absolute">
+
+    <div class="container-fluid" id="msg-list">
+
+        {% if Chat %}
+            {% for obj in Chat %}
+
+                {% if obj.username == request.user.username %}
+
+                    <div class="container2 darker">
+                        <img class="right"
+                             src="https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png"
+                             alt="Avatar" style="width:100%;">
+                        <p>{{ obj.message }}</p>
+                        <span class="time-left">{{ obj.username }}</span>
+                    </div>
+                {% else %}
+
+                    <div class="container2 lighter">
+                        <img src="https://cdn1.iconfinder.com/data/icons/mix-color-4/502/Untitled-1-512.png"
+                             alt="Avatar" style="width:100%;">
+                        <p style="text-align: right">{{ obj.message }}</p>
+                        <span class="time-right">{{ obj.username }}</span>
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+        {% else %}
+            <p> No mesaages yet!</p>
+        {% endif %}
+
+    </div>
+    <form id="Chat-form" method="post" action="{% url 'ide' project.pk %}">
+        {% csrf_token %}
+        <input style="position: relative; width: 450px; height: 50px; margin-top: 15px;" type="textarea"
+               rows="10"
+               cols="50" id="chat-msg" name="chat-msg">
+        <button type="submit" id="register" class="btn-info">Send!</button>
+</div>
+
+<script>
     function init() {
-      //// Initialize Firebase.
-      //// TODO: replace with your Firebase project configuration.
-      var config = {
-        apiKey: "AIzaSyBI8uzW2FaBTe_NCceJbgFsNxcz_EeBOUw",
-        authDomain: "collabide-2350f.firebaseapp.com",
-        databaseURL: "https://collabide-2350f.firebaseio.com"
-      };
 
-      firebase.initializeApp(config);
-      //// Get Firebase Database reference.
-      var firepadRef = getExampleRef();
-      //// Create ACE
-      var editor = ace.edit("firepad-container");
-      editor.setTheme("ace/theme/github");
-      var session = editor.getSession();
-      session.setUseWrapMode(true);
-      session.setUseWorker(false);
-      session.setMode("ace/mode/javascript");
-      //// Create Firepad.
-      var firepad = Firepad.fromACE(firepadRef, editor, {
-        defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
-      });
+        setInterval(getMessages, 200000, {{ project.id }});
+
+        var config = {
+            apiKey: "AIzaSyBI8uzW2FaBTe_NCceJbgFsNxcz_EeBOUw",
+            authDomain: "collabide-2350f.firebaseapp.com",
+            databaseURL: "https://collabide-2350f.firebaseio.com"
+        };
+        firebase.initializeApp(config);
+        //// Get Firebase Database reference.
+        var firepadRef = getExampleRef();
+        //// Create ACE
+        var editor = ace.edit("firepad-container");
+        editor.setTheme("ace/theme/github");
+        var session = editor.getSession();
+        session.setUseWrapMode(true);
+        session.setUseWorker(false);
+        session.setMode("ace/mode/javascript");
+        //// Create Firepad.
+        var firepad = Firepad.fromACE(firepadRef, editor, {
+            defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
+        });
     }
     // Helper to get hash from end of URL or generate a random one.
     function getExampleRef() {
-      var ref = firebase.database().ref();
-      var hash = window.location.hash.replace(/#/g, '');
-      if (hash) {
-        ref = ref.child(hash);
-      } else {
-        ref = ref.push(); // generate unique location.
-        window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
-      }
-      if (typeof console !== 'undefined') {
-        console.log('Firebase data: ', ref.toString());
-      }
-      return ref;
+        var ref = firebase.database().ref();
+        var hash = window.location.hash.replace(/#/g, '');
+
+        if (hash) {
+            ref = ref.child(hash);
+        } else {
+            ref = ref.push(); // generate unique location.
+            window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+        }
+        if (typeof console !== 'undefined') {
+            console.log('Firebase data: ', ref.toString());
+        }
+        return ref;
     }
-  </script>
+</script>
+
+<script src="{% static 'js/chat.js' %}"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Project
 from accounts.models import Contributor
 from ide.views import ide
-from random_key import id_generator
+from random_key import id_generator, firebaseid_generator
 
 @login_required(login_url='/')
 def home(request):
@@ -39,10 +39,13 @@ def joinproject(request):
     if request.method=='POST':
         key = request.POST.get('key')
 
+        print(key)
         try:
             project = Project.objects.filter(Key=key)[0]
         except:
             project = None
+
+        print(project)
 
         if project is not None:
             contributor = Contributor(user=request.user)
@@ -68,9 +71,14 @@ def createproject(request):
         while Project.objects.filter(Key=key):
             key = id_generator()
 
+        firebasekey = firebaseid_generator()
+
+        while Project.objects.filter(FirebaseID=key):
+            firebasekey = firebaseid_generator()
+
         owner = request.user
 
-        project = Project(Title=title, Description=description, Key=key, Owner=owner)
+        project = Project(Title=title, Description=description, FirebaseID=firebasekey, Key=key, Owner=owner)
         project.save()
 
         contributor = Contributor(user=request.user)
