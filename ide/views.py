@@ -29,3 +29,8 @@ def Messages(request, pk):
     messages = Chat.objects.filter(RefProject=project)
 
     return render(request, 'ide/messages.html', {'project': project, 'Chat': messages})
+
+def Overview(request, pk):
+    project = Project.objects.get(pk=pk)
+
+    return render(request, 'ide/projectoverview.html', {'project':project})

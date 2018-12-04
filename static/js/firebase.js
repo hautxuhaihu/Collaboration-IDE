@@ -25,6 +25,7 @@ function init() {
     // Helper to get hash from end of URL or generate a random one.
     function getExampleRef() {
         var ref = firebase.database().ref();
+        window.location.hash = ;
         var hash = window.location.hash.replace(/#/g, '');
 
         if (hash) {
