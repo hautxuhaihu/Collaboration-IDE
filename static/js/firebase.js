@@ -3,7 +3,7 @@ function init() {
         setInterval(getMessages, 200000, id);
 
         var config = {
-            apiKey: "AIzaSyBI8uzW2FaBTe_NCceJbgFsNxcz_EeBOUw",
+            apiKey: "<API key>",
             authDomain: "collabide-2350f.firebaseapp.com",
             databaseURL: "https://collabide-2350f.firebaseio.com"
         };
