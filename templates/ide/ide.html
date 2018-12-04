@@ -161,25 +161,27 @@
     <div class="row">
 
         <div class="col-sm-3">
-            <p>Choose Language: <select>
-                <option value="HTML">HTML</option>
-                <option value="CSS">CSS</option>
-                <option value="Python">Python</option>
-                <option value="C-CPP">C/C++</option>
-                <option value="Java">Java</option>
-                <option value="Javascript">Javascript</option>
+            <p>Choose Language: <select id="language">
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="python">Python</option>
+                <option value="c_cpp">C/C++</option>
+                <option value="java">Java</option>
+                <option value="javascript">Javascript</option>
                 <option value="text">TXT</option>
-                <option value="C#">C#
+                <option value="csharp">C#</option>
 
             </select></p>
         </div>
         <div class="col-sm-3">
-            <p>Choose Theme: <select>
+            <p>Choose Theme:
+                <select id="theme">
                 <option value="github">Github</option>
                 <option value="dracula">Dracula</option>
                 <option value="monokai">Monokai</option>
                 <option value="eclipse">Eclipse</option>
-            </select></p>
+                </select>
+            </p>
         </div>
     </div>
 </div>
@@ -298,5 +300,6 @@
 </script>
 
 <script src="{% static 'js/chat.js' %}"></script>
+<script src="{% static 'js/editor.js' %}"></script>
 </body>
 </html>
