@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls import url
 from accounts.views import formhandleview
 from dashboard.views import home, joinproject, createproject
-from ide.views import ide, Messages
+from ide.views import ide, Messages, Overview, CreateFile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +30,6 @@ urlpatterns = [
     url(r'^joinproject/$', joinproject, name='joinproject'),
     url(r'^createproject/$', createproject, name='createproject'),
     url(r'^messages/(?P<pk>[0-9]+)/$', Messages, name='messages'),
+    url(r'^overview/(?P<pk>[0-9]+)/$', Overview, name='overview'),
+    url(r'^createFile/(?P<pk>[0-9]+)/$', CreateFile, name='createFile'),
 ]

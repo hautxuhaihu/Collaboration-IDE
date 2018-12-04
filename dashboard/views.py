@@ -4,7 +4,7 @@ from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from .models import Project
 from accounts.models import Contributor
-from ide.views import ide
+from ide.models import Source
 from random_key import id_generator, firebaseid_generator
 
 @login_required(login_url='/')
@@ -57,7 +57,7 @@ def joinproject(request):
                 project.Developers.add(contributor)
 
 
-            return redirect('ide', project.id)
+            return redirect('overview', project.id)
 
         else:
             return HttpResponse("Invalid Key")
@@ -80,6 +80,9 @@ def createproject(request):
 
         project = Project(Title=title, Description=description, FirebaseID=firebasekey, Key=key, Owner=owner)
         project.save()
+
+        s = Source(RefProject=project)
+        s.save()
 
         contributor = Contributor(user=request.user)
         if Contributor.objects.filter(user=request.user):

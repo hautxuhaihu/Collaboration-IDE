@@ -1,0 +1,17 @@
+<li style="list-style-type: none;"> <span class="glyphicon glyphicon-folder-open"> {{ dir.Name }} <br>
+    {% if dir.ChildrenFolder %}
+        <ul>
+              {% with dir=dir.ChildrenFolder template_name='ide/directorytree.html' %}
+                   {% include template_name %}
+              {% endwith%}
+         </ul>
+    {% endif %}
+
+    {% if dir.ChildrenFiles %}
+        <ul>
+            {% for file in dir.ChildrenFiles.all %}
+            <a href="{% url 'ide' file.pk %}"><li style="list-style-type: none;"> <span class="glyphicon glyphicon-file"> {{ file.Name }}</li></a>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

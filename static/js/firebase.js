@@ -1,6 +1,6 @@
 function init() {
 
-        setInterval(getMessages, 200000, id);
+        setInterval(getMessages, 200000, response["id"]);
 
         var config = {
             apiKey: "AIzaSyBI8uzW2FaBTe_NCceJbgFsNxcz_EeBOUw",
@@ -12,11 +12,18 @@ function init() {
         var firepadRef = getExampleRef();
         //// Create ACE
         var editor = ace.edit("firepad-container");
-        editor.setTheme("ace/theme/github");
+         var value = document.getElementById("theme").value;
+
+        console.log(value);
+        editor.setTheme("ace/theme/" + value);
+
         var session = editor.getSession();
         session.setUseWrapMode(true);
         session.setUseWorker(false);
-        session.setMode("ace/mode/javascript");
+         var value = document.getElementById("language").value;
+
+        console.log(value);
+        session.setMode("ace/mode/" + value);
         //// Create Firepad.
         var firepad = Firepad.fromACE(firepadRef, editor, {
             defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
@@ -25,6 +32,7 @@ function init() {
     // Helper to get hash from end of URL or generate a random one.
     function getExampleRef() {
         var ref = firebase.database().ref();
+        window.location.hash = response["hashvalue"];
         var hash = window.location.hash.replace(/#/g, '');
 
         if (hash) {

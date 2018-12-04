@@ -7,10 +7,9 @@
     <meta charset="utf-8"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
 
     <!-- Firebase -->
@@ -134,12 +133,22 @@
 
 <body onload="init()">
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-inverse">
     <div class="container">
         <a class="navbar-brand" id="title" href="#">{{ project.Title }}</a>
-        <ul class="navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
             <li class="nav-item"><a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span> Created
-                By <strong>{{ project.Owner }}</strong></a></li>
+                By <strong>{{ project.Owner }}</strong></a>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Developers
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    {% for contributor in contributors %}
+                        <li><a href="#">{{ contributor.user }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
@@ -147,15 +156,55 @@
 
 <div class="container">
 
-    <h3 style="text-align: center">{{ project. }}</h3>
+
     <div class="row">
         <div class="col-sm-3">
-            <button class="btn-large btn-info">Create New File</button>
+            <h4>{{ file.Name }}</h4>
+        </div>
+        <div class="col-sm-3">
+            <button class="btn-large btn-info" data-toggle="modal" data-target="#createFile">Create New File</button>
         </div>
 
-        <div class="col-sm-3">
-            <button class="btn-large btn-danger">Delete This File</button>
+        <div id="createFile" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create File</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="model-body">
+                        <form action="{% url 'createFile' project.pk %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input class="form-control" type="text" placeholder="Enter Name" name="name"><br>
+                                <p>Choose Language: <select name="language">
+                                    <option value="html">HTML</option>
+                                    <option value="css">CSS</option>
+                                    <option value="python">Python</option>
+                                    <option value="c_cpp">C/C++</option>
+                                    <option value="java">Java</option>
+                                    <option value="javascript">Javascript</option>
+                                    <option value="text">TXT</option>
+                                    <option value="csharp">C#</option>
+
+                                </select></p>
+                                <br>
+                                <input class="form-control" type="text" placeholder="Enter Folder Location"
+                                       name="location"><br>
+                                <span style="font-size: 12px;">Enter in proper format. e.g. (/home/ide/) Use "/" for root.</span><br><br>
+                                <button type="submit" class="btn-success">Create!</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
+
+
     </div>
 
     <hr>
@@ -178,10 +227,10 @@
         <div class="col-sm-3">
             <p>Choose Theme:
                 <select id="theme">
-                <option value="github">Github</option>
-                <option value="dracula">Dracula</option>
-                <option value="monokai">Monokai</option>
-                <option value="eclipse">Eclipse</option>
+                    <option value="github">Github</option>
+                    <option value="dracula">Dracula</option>
+                    <option value="monokai">Monokai</option>
+                    <option value="eclipse">Eclipse</option>
                 </select>
             </p>
         </div>
@@ -190,32 +239,19 @@
 
 <div id="firepad-container"></div>
 <div class="directory">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Folder</th>
-            <th>File</th>
-            <th>Created</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>src</td>
-            <td><a>gitignore</a></td>
-            <td>1 Dec 2018</td>
-        </tr>
-        <tr>
-            <td>src/static</td>
-            <td><a>index.js</a></td>
-            <td>2 Dec 2018</td>
-        </tr>
-        <tr>
-            <td>src/templates</td>
-            <td><a>home.html</a></td>
-            <td>2 Dec 2018</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="container well">
+        <ul>
+            {% for dir in directory %}
+
+                {% if dir.inSource %}
+                    {% include "ide/directorytree.html" %}
+                {% endif %}
+            {% endfor %}
+            {% for file in files %}
+                <a href="{% url 'ide' file.pk %}"><li style="list-style-type: none;"> <span class="glyphicon glyphicon-file"> {{ file.Name }}</li></a>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 <div class="absolute">
 
@@ -246,7 +282,7 @@
 
             {% endfor %}
         {% else %}
-            <p> No mesaages yet!</p>
+            <p id="emptyerror"> No mesaages yet!</p>
         {% endif %}
 
     </div>
@@ -258,7 +294,10 @@
         <button type="submit" id="register" class="btn-info">Send!</button>
 </div>
 
-<script> var id = {{ project.id }}</script>
+<script> console.log({{ project.id }});
+var response = {"id": {{ project.id }}, "hashvalue": "{{ file.FirbaseID }}"};
+document.getElementById("language").value = "{{ file.Language }}"</script>
+
 <script src="{% static 'js/chat.js' %}"></script>
 <script src="{% static 'js/editor.js' %}"></script>
 <script src="{% static 'js/firebase.js' %}"></script>

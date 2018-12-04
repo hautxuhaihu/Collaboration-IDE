@@ -11,6 +11,7 @@ $('#Chat-form').on('submit', function(event){
         success : function(json){
             console.log(json);
             $('#chat-msg').val('');
+            $('#emptyerror').remove();
             $('#msg-list').append('<div class="container2 darker">' +
                                     '<img class="right" src="https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png" alt="Avatar" style="width:100%;">' +
                                     '<p>' + json.msg + '</p>' +
