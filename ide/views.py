@@ -75,10 +75,28 @@ def CreateFile(request, pk):
         directory = Directory.objects.filter(SourceFolder=source)
         files = File.objects.filter(SourceFolder=source)
 
+        return render(request, 'ide/ide.html',
+                      {'project': project, 'directory': directory, 'file':file, 'files': files, 'contributors': contributors})
+    else:
+        return HttpResponse('<p>Some error occured!</p>')
+
+def CreateFolder(request, pk):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        project = Project.objects.get(pk=pk)
+
+        source = Source.objects.filter(RefProject=project)[0]
+
+        dir = Directory(Name=name, SourceFolder=source, inSource=True)
+
+        dir.save()
+
+        contributors = project.Developers.all()
+
+        directory = Directory.objects.filter(SourceFolder=source)
+        files = File.objects.filter(SourceFolder=source)
+
         return render(request, 'ide/projectoverview.html',
                       {'project': project, 'directory': directory, 'files': files, 'contributors': contributors})
     else:
         return HttpResponse('<p>Some error occured!</p>')
-
-
-

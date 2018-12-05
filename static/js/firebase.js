@@ -1,6 +1,6 @@
 function init() {
 
-        setInterval(getMessages, 200000, response["id"]);
+        setInterval(getMessages, 5000, response["id"]);
 
         var config = {
             apiKey: "AIzaSyBI8uzW2FaBTe_NCceJbgFsNxcz_EeBOUw",
@@ -26,7 +26,7 @@ function init() {
         session.setMode("ace/mode/" + value);
         //// Create Firepad.
         var firepad = Firepad.fromACE(firepadRef, editor, {
-            defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
+            defaultText: ''
         });
     }
     // Helper to get hash from end of URL or generate a random one.
